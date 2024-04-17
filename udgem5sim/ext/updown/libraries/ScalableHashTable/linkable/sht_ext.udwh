@@ -1,0 +1,20 @@
+#ifndef __sht_ext_H__
+#define __sht_ext_H__
+
+extern event SHTExt_initialize_TR();
+extern event SHTExt_finalize_TR();
+extern event SHTExt_update_TR();
+extern event SHTExt_update_with_mask_TR();
+extern event SHTExt_update_with_offset_TR();
+extern event SHTExt_get_TR();
+extern event SHTExt_get_with_random_TR();
+extern event SHTExt_get_with_mask_TR();
+extern event SHTExt_get_with_offset_TR();
+extern event SHTExt_ext_graph_append_TR();
+extern event SHTExt_ext_graph_get_next_TR();
+extern event SHTExt_ext_graph_get_addr_TR();
+extern event SHTExt_get_iterators_TR();
+extern event SHTExt_get_next_TR();
+extern event SHTExt_get_next_split_TR();
+
+#endif

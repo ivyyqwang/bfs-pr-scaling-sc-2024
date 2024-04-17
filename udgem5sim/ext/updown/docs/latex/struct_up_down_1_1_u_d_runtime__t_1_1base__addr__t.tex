@@ -1,0 +1,144 @@
+\hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t}{}\doxysection{Up\+Down\+::UDRuntime\+\_\+t\+::base\+\_\+addr\+\_\+t Struct Reference}
+\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t}\index{UpDown::UDRuntime\_t::base\_addr\_t@{UpDown::UDRuntime\_t::base\_addr\_t}}
+
+
+Struct containing all the base addresses.  
+
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_a94a9064647a84bd3720462ad04549ff5}\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_a94a9064647a84bd3720462ad04549ff5}} 
+volatile ptr\+\_\+t {\bfseries mmaddr}
+\item 
+\mbox{\Hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_a72f00e51c9fc72c4b93b25a8eb54a383}\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_a72f00e51c9fc72c4b93b25a8eb54a383}} 
+volatile ptr\+\_\+t {\bfseries spaddr}
+\item 
+\mbox{\Hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_a52db53ae8c0f3ffd1ab148040f0dc9a9}\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_a52db53ae8c0f3ffd1ab148040f0dc9a9}} 
+volatile ptr\+\_\+t {\bfseries ctrl\+Addr}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct containing all the base addresses. 
+
+Base addresses are locations in memory where the top to updown communication happens.\hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md8}{}\doxysubsubsection{Current Memory Structure}\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md8}
+The memory is organized in two\+: Scratchpad memory and Control mapped registers and queues\hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md9}{}\doxyparagraph{Scratchpad memory address space}\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md9}
+\begin{DoxyVerb}*        MEMORY                     SIZE
+*   |--------------|  <-- Scratchpad Base Address
+*   |              |
+*   |   SPMEM UD0  |
+*   |              |
+*   |--------------|  <-- CapacityPerLane * CapacityNumLanes
+*   |              |
+*   |   SPMEM UD1  |
+*   |              |
+*   |--------------|  <-- 2 * CapacityPerLane * CapacityNumLanes
+*   |      ...     |
+*   |--------------|
+*   |              |
+*   |   SPMEM UDN  |
+*   |              |
+*   |--------------|  <-- NumUDs * CapacityPerLane * CapacityNumLanes
+* \end{DoxyVerb}
+\hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md10}{}\doxyparagraph{Scratchpad memory for 1 UD}\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md10}
+\begin{DoxyVerb}*        MEMORY                     SIZE
+*   |--------------|  <-- Scratchpad Base Address
+*   |              |
+*   |    Lane 0    |
+*   |              |
+*   |* * * * * * * |  <-- SPmem BankSize
+*   | * * * * * * *|    |
+*   |* * * * * * * |    | For expansion purposes
+*   | * * * * * * *|    |
+*   |--------------|  <-- CapacityPerLane
+*   |              |
+*   |    Lane 1    |
+*   |              |
+*   |* * * * * * * |  <-- CapacityPerLane + SPmem BankSize
+*   | * * * * * * *|    |
+*   |* * * * * * * |    | For expansion purposes
+*   | * * * * * * *|    |
+*   |--------------|  <-- 2 * CapacityPerLane
+*   |      ...     |
+*   |--------------|  <-- (NumLanes-1)*CapacityPerLane
+*   |              |
+*   |    Lane N    |
+*   |              |
+*   |* * * * * * * |  <-- (NumLanes-1)*CapacityPerLane + SPmem BankSize
+*   | * * * * * * *|    |
+*   |* * * * * * * |    | For expansion purposes
+*   | * * * * * * *|    |
+*   |--------------|  <-- (NumLanes) * CapacityPerLane
+*   | * * * * * * *|
+*   |* * * * * * * |   -|
+*   | * * * * * * *|    | For expansion purposes
+*   |* * * * * * * |   -|
+*   | * * * * * * *|
+*   |--------------|  <-- CapacityPerLane * CapacityNumLanes
+* \end{DoxyVerb}
+\hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md11}{}\doxyparagraph{Control signals memory address space}\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md11}
+\begin{DoxyVerb}*        MEMORY                     SIZE
+*   |--------------|  <-- Control Base Address
+*   |              |
+*   |  CONTROL UD0 |
+*   |              |
+*   |--------------|  <-- CapacityControlPerLane * CapacityNumLanes
+*   |              |
+*   |  CONTROL UD1 |
+*   |              |
+*   |--------------|  <-- 2 * CapacityControlPerLane * CapacityNumLanes
+*   |      ...     |
+*   |--------------|
+*   |              |
+*   |  CONTROL UD2 |
+*   |              |
+*   |--------------|  <-- NumUDs * CapacityControlPerLane * CapacityNumLanes
+* \end{DoxyVerb}
+\hypertarget{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md12}{}\doxyparagraph{Control signals memory address space for 1 UD}\label{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t_autotoc_md12}
+\begin{DoxyVerb}*        MEMORY                     SIZE
+*   |--------------|  <-- Control Base Address
+*   |    Lane 0    |
+*   |  Event Queue |
+*   | Oprnds Queue |
+*   |  Start Exec  |
+*   |     Lock     |
+*   |* * * * * * * |   -|
+*   | * * * * * * *|    |
+*   |* * * * * * * |    | For expansion purposes
+*   | * * * * * * *|    |
+*   |--------------|  <-- CapacityControlPerLane
+*   |    Lane 1    |
+*   |  Event Queue |
+*   | Oprnds Queue |
+*   |  Start Exec  |
+*   |     Lock     |
+*   |* * * * * * * |   -|
+*   | * * * * * * *|    |
+*   |* * * * * * * |    | For expansion purposes
+*   | * * * * * * *|    |
+*   |--------------|  <-- 2 * CapacityControlPerLane
+*   |      ...     |
+*   |--------------|  <-- (NumLanes-1) * CapacityControlPerLane
+*   |    Lane N    |
+*   |  Event Queue |
+*   | Oprnds Queue |
+*   |  Start Exec  |
+*   |     Lock     |
+*   |* * * * * * * |   -|
+*   | * * * * * * *|    |
+*   |* * * * * * * |    | For expansion purposes
+*   | * * * * * * *|    |
+*   |--------------|  <-- NumLanes * CapacityControlPerLane
+*   | * * * * * * *|
+*   |* * * * * * * |   -|
+*   | * * * * * * *|    | For expansion purposes
+*   |* * * * * * * |   -|
+*   | * * * * * * *|
+*   |--------------|  <-- CapacityControlPerLane * CapacityNumLanes
+* \end{DoxyVerb}
+ 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/josemonsalvediaz/\+Documents/\+Project38/llvm/updown/runtime/include/updown.\+h\end{DoxyCompactItemize}

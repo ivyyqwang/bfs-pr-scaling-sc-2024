@@ -1,0 +1,542 @@
+\hypertarget{class_up_down_1_1_u_d_runtime__t}{}\doxysection{Up\+Down\+::UDRuntime\+\_\+t Class Reference}
+\label{class_up_down_1_1_u_d_runtime__t}\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+
+
+Class containing the Up\+Down Runtime.  
+
+
+
+
+{\ttfamily \#include $<$updown.\+h$>$}
+
+Inheritance diagram for Up\+Down\+::UDRuntime\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_up_down_1_1_u_d_runtime__t}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t}{base\+\_\+addr\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Struct containing all the base addresses. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_1_1ud__mapped__memory__t}{ud\+\_\+mapped\+\_\+memory\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em This is a class to manage the mapped memory. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a52b185b13ccd3e37218204458ba94f93}\label{class_up_down_1_1_u_d_runtime__t_a52b185b13ccd3e37218204458ba94f93}} 
+{\bfseries UDRuntime\+\_\+t} (\mbox{\hyperlink{struct_up_down_1_1ud__machine__t}{ud\+\_\+machine\+\_\+t}} machine\+Config)
+\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_af58fb869d8558462617fa84bf83bb595}{send\+\_\+event}} (\mbox{\hyperlink{class_up_down_1_1event__t}{event\+\_\+t}} ev)
+\begin{DoxyCompactList}\small\item\em Sends an event to the Up\+Down. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_af61e9f01022957944d9c74daf365c0a4}{start\+\_\+exec}} (uint8\+\_\+t ud\+\_\+id, uint8\+\_\+t lane\+\_\+num)
+\begin{DoxyCompactList}\small\item\em Signal lane to start execution. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a3f6d1895e3d1ad7fc40b918154a027ad}{mm\+\_\+malloc}} (uint64\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Memory allocator for the mapped memory. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_aa02ee38bf2166f297f40176c88485c1a}{mm\+\_\+free}} (void $\ast$ptr)
+\begin{DoxyCompactList}\small\item\em Free an already existing memory allocation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a20ee360e1a7946e6296a2dacca1b284f}{t2mm\+\_\+memcpy}} (uint64\+\_\+t offset, void $\ast$src, uint64\+\_\+t size=1)
+\begin{DoxyCompactList}\small\item\em Copy to mapped memory from top. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a63c5785ffbce1f5944b88346633e0a14}{mm2t\+\_\+memcpy}} (uint64\+\_\+t offset, void $\ast$dst, uint64\+\_\+t size=1)
+\begin{DoxyCompactList}\small\item\em Copy from mapped memory to top. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ae7831fce61c9c34db9043c63f0286ebf}{t2ud\+\_\+memcpy}} (void $\ast$data, uint64\+\_\+t size, uint8\+\_\+t ud\+\_\+id, uint8\+\_\+t lane\+\_\+num, uint32\+\_\+t offset)
+\begin{DoxyCompactList}\small\item\em Copy data from the top to the scratchpad memory. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a0bde0edbcb8ab5a7a5d5daabb5e75d49}{ud2t\+\_\+memcpy}} (void $\ast$data, uint64\+\_\+t size, uint8\+\_\+t ud\+\_\+id, uint8\+\_\+t lane\+\_\+num, uint32\+\_\+t offset)
+\begin{DoxyCompactList}\small\item\em Copy data from the scratchpad memory to the top. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ab96599b352e42e823c692ecc4d3ee689}{test\+\_\+addr}} (uint8\+\_\+t ud\+\_\+id, uint8\+\_\+t lane\+\_\+num, uint32\+\_\+t offset, word\+\_\+t expected=1)
+\begin{DoxyCompactList}\small\item\em Test a memory location in the updwon bank for the expected value. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a7e41c8dae74b2b76e74c8a3d20324d15}{test\+\_\+wait\+\_\+addr}} (uint8\+\_\+t ud\+\_\+id, uint8\+\_\+t lane\+\_\+num, uint32\+\_\+t offset, word\+\_\+t expected=1)
+\begin{DoxyCompactList}\small\item\em Test a memory location in the updown bank for the expected value. Wait until it is the expected value. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_aa3d126b94a4803a73a7bcbdb18707cb2}{get\+\_\+lane\+\_\+physical\+\_\+memory}} (uint8\+\_\+t ud\+\_\+id, uint8\+\_\+t lane\+\_\+num, uint32\+\_\+t offset=0)
+\begin{DoxyCompactList}\small\item\em Get offset in local memory. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a206a9273dbdc8141741e7cd6b065a1fd}{dump\+Base\+Addrs}} ()
+\begin{DoxyCompactList}\small\item\em Helper function to dump current base addresses. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a79ecb1814ceba28e24c404af732e073c}{dump\+Machine\+Config}} ()
+\begin{DoxyCompactList}\small\item\em Helper function to dump current Machine Config. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}{calc\+\_\+addrmap}} ()
+\begin{DoxyCompactList}\small\item\em Initializes the base addresses for queues and states. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a33fce78b89238e7f2b21fd9e08bf4a2a}{get\+\_\+lane\+\_\+aligned\+\_\+offset}} (uint8\+\_\+t ud\+\_\+id, uint8\+\_\+t lane\+\_\+num, uint32\+\_\+t offset=0)
+\begin{DoxyCompactList}\small\item\em Get the aligned offset object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a327a02b17f491af168ab57569240af8f}{reset\+\_\+memory\+\_\+manager}} ()
+\begin{DoxyCompactList}\small\item\em Reset the Memory Manager when machine configuration is changed;. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t}{base\+\_\+addr\+\_\+t}} \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}
+\begin{DoxyCompactList}\small\item\em container for all base addresses \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_up_down_1_1ud__machine__t}{ud\+\_\+machine\+\_\+t}} \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}{Machine\+Config}}
+\begin{DoxyCompactList}\small\item\em Contains configuration parameters of the machine abstraction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a55370aaf205cba82534e8564326c411c}\label{class_up_down_1_1_u_d_runtime__t_a55370aaf205cba82534e8564326c411c}} 
+\mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_1_1ud__mapped__memory__t}{ud\+\_\+mapped\+\_\+memory\+\_\+t}} $\ast$ {\bfseries Mapped\+Memory\+Manager}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class containing the Up\+Down Runtime. 
+
+This class is the entry point of the Up\+Down runtime, it manages all the necessary state, keeps track of pointers and memory allocation and coordinates execution of code. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}\label{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!calc\_addrmap@{calc\_addrmap}}
+\index{calc\_addrmap@{calc\_addrmap}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{calc\_addrmap()}{calc\_addrmap()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::calc\+\_\+addrmap (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Initializes the base addresses for queues and states. 
+
+This function initializes Base\+Addrs according to the configuration file for their use in the rest of the runtime 
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}, and \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}{Machine\+Config}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a1af458c531ea3297c7991facbed758fa}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::\+Sim\+UDRuntime\+\_\+t()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a206a9273dbdc8141741e7cd6b065a1fd}\label{class_up_down_1_1_u_d_runtime__t_a206a9273dbdc8141741e7cd6b065a1fd}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!dumpBaseAddrs@{dumpBaseAddrs}}
+\index{dumpBaseAddrs@{dumpBaseAddrs}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{dumpBaseAddrs()}{dumpBaseAddrs()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::dump\+Base\+Addrs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Helper function to dump current base addresses. 
+
+This function has no effect on runtime, but it is useful for debugging 
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a79ecb1814ceba28e24c404af732e073c}\label{class_up_down_1_1_u_d_runtime__t_a79ecb1814ceba28e24c404af732e073c}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!dumpMachineConfig@{dumpMachineConfig}}
+\index{dumpMachineConfig@{dumpMachineConfig}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{dumpMachineConfig()}{dumpMachineConfig()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::dump\+Machine\+Config (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Helper function to dump current Machine Config. 
+
+This function has no effect on runtime, but it is useful for debugging 
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}{Machine\+Config}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a33fce78b89238e7f2b21fd9e08bf4a2a}\label{class_up_down_1_1_u_d_runtime__t_a33fce78b89238e7f2b21fd9e08bf4a2a}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!get\_lane\_aligned\_offset@{get\_lane\_aligned\_offset}}
+\index{get\_lane\_aligned\_offset@{get\_lane\_aligned\_offset}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{get\_lane\_aligned\_offset()}{get\_lane\_aligned\_offset()}}
+{\footnotesize\ttfamily uint64\+\_\+t Up\+Down\+::\+UDRuntime\+\_\+t\+::get\+\_\+lane\+\_\+aligned\+\_\+offset (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ud\+\_\+id,  }\item[{uint8\+\_\+t}]{lane\+\_\+num,  }\item[{uint32\+\_\+t}]{offset = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Get the aligned offset object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ud\+\_\+id} & Up\+Down ID \\
+\hline
+{\em lane\+\_\+num} & Lane ID \\
+\hline
+{\em offset} & Offset in bytes \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint64\+\_\+t 
+\end{DoxyReturn}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}{Machine\+Config}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ae7831fce61c9c34db9043c63f0286ebf}{t2ud\+\_\+memcpy()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ab96599b352e42e823c692ecc4d3ee689}{test\+\_\+addr()}}, \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a112bba7e502827b810ab98efbf114298}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::test\+\_\+addr()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a7e41c8dae74b2b76e74c8a3d20324d15}{test\+\_\+wait\+\_\+addr()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a0bde0edbcb8ab5a7a5d5daabb5e75d49}{ud2t\+\_\+memcpy()}}, and \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a42d83d235215dc1897eca7a5ee09fc7d}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::ud2t\+\_\+memcpy()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_aa3d126b94a4803a73a7bcbdb18707cb2}\label{class_up_down_1_1_u_d_runtime__t_aa3d126b94a4803a73a7bcbdb18707cb2}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!get\_lane\_physical\_memory@{get\_lane\_physical\_memory}}
+\index{get\_lane\_physical\_memory@{get\_lane\_physical\_memory}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{get\_lane\_physical\_memory()}{get\_lane\_physical\_memory()}}
+{\footnotesize\ttfamily uint64\+\_\+t Up\+Down\+::\+UDRuntime\+\_\+t\+::get\+\_\+lane\+\_\+physical\+\_\+memory (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ud\+\_\+id,  }\item[{uint8\+\_\+t}]{lane\+\_\+num,  }\item[{uint32\+\_\+t}]{offset = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Get offset in local memory. 
+
+This is a temporary solution to the absence of an appropriate virtual memory mapping. This functions assumes that physical memory side is contiguous and it does not have space for expansion. This is, instead of using the Scratchpad Capacity that is explained in \mbox{\hyperlink{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t}{UDRuntime\+\_\+t\+::base\+\_\+addr\+\_\+t}}, it uses the actual size of the Scratchpad Memory.
+
+Currently, this function is used to allow pointers to be passed from top to updown.\hypertarget{class_up_down_1_1_u_d_runtime__t_autotoc_md13}{}\doxyparagraph{Scratchpad physical memory for 1 UD}\label{class_up_down_1_1_u_d_runtime__t_autotoc_md13}
+\begin{DoxyVerb}*        MEMORY                     SIZE
+*   |--------------|  <-- Scratchpad Base Address
+*   |              |
+*   |    Lane 0    |
+*   |              |
+*   |--------------|  <-- SPmem BankSize
+*   |              |
+*   |    Lane 1    |
+*   |              |
+*   |--------------|  <-- 2 * SPmem BankSize
+*   |      ...     |
+*   |--------------|  <-- (NumLanes-1) * SPmem BankSize
+*   |              |
+*   |    Lane N    |
+*   |              |
+*   |--------------|  <-- (NumLanes) * SPmem BankSize
+* \end{DoxyVerb}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em ud\+\_\+id} & Up\+Down ID \\
+\hline
+{\em lane\+\_\+num} & Lane ID \\
+\hline
+{\em offset} & Offset in bytes \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint64\+\_\+t 
+\end{DoxyReturn}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}{Machine\+Config}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a811c0050b3d1ce0e696bddb853017972}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::t2ud\+\_\+memcpy()}}, \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a112bba7e502827b810ab98efbf114298}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::test\+\_\+addr()}}, and \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a42d83d235215dc1897eca7a5ee09fc7d}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::ud2t\+\_\+memcpy()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a63c5785ffbce1f5944b88346633e0a14}\label{class_up_down_1_1_u_d_runtime__t_a63c5785ffbce1f5944b88346633e0a14}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!mm2t\_memcpy@{mm2t\_memcpy}}
+\index{mm2t\_memcpy@{mm2t\_memcpy}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{mm2t\_memcpy()}{mm2t\_memcpy()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::mm2t\+\_\+memcpy (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{offset,  }\item[{void $\ast$}]{dst,  }\item[{uint64\+\_\+t}]{size = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+
+
+Copy from mapped memory to top. 
+
+Mapped memory is a region in DRAM that can be accessed from updown. This is necessary due to the lack of support for virtual memories in the Up\+Down. The Up\+Down will be able to use pointers directly into this region without need for address translation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em offset} & Destination offset within the memory mapped region \\
+\hline
+{\em dst} & Source pointer \\
+\hline
+{\em size} & size in bytes \\
+\hline
+\end{DoxyParams}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_aa02ee38bf2166f297f40176c88485c1a}\label{class_up_down_1_1_u_d_runtime__t_aa02ee38bf2166f297f40176c88485c1a}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!mm\_free@{mm\_free}}
+\index{mm\_free@{mm\_free}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{mm\_free()}{mm\_free()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::mm\+\_\+free (\begin{DoxyParamCaption}\item[{void $\ast$}]{ptr }\end{DoxyParamCaption})}
+
+
+
+Free an already existing memory allocation. 
+
+Mapped memory is a region in DRAM that can be accessed from updown. This is necessary due to the lack of support for virtual memories in the Up\+Down. The Up\+Down will be able to use pointers directly into this region without need for address translation.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000005}{Todo}}]\+: This should be thread safe?\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em ptr} & pointer to deallocate \\
+\hline
+\end{DoxyParams}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_1_1ud__mapped__memory__t_adc9c872b795c000490acf4f5e350aa35}{Up\+Down\+::\+UDRuntime\+\_\+t\+::ud\+\_\+mapped\+\_\+memory\+\_\+t\+::remove\+\_\+region()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a3f6d1895e3d1ad7fc40b918154a027ad}\label{class_up_down_1_1_u_d_runtime__t_a3f6d1895e3d1ad7fc40b918154a027ad}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!mm\_malloc@{mm\_malloc}}
+\index{mm\_malloc@{mm\_malloc}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{mm\_malloc()}{mm\_malloc()}}
+{\footnotesize\ttfamily void $\ast$ Up\+Down\+::\+UDRuntime\+\_\+t\+::mm\+\_\+malloc (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+
+
+Memory allocator for the mapped memory. 
+
+Mapped memory is a region in DRAM that can be accessed from updown. This is necessary due to the lack of support for virtual memories in the Up\+Down. The Up\+Down will be able to use pointers directly into this region without need for address translation.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000004}{Todo}}]\+: This should be thread safe?\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & size in bytes \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void $\ast$ Pointer to the location. 
+\end{DoxyReturn}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_1_1ud__mapped__memory__t_a9a299c4ef46734c99eb39f00052e1ca6}{Up\+Down\+::\+UDRuntime\+\_\+t\+::ud\+\_\+mapped\+\_\+memory\+\_\+t\+::get\+\_\+region()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a327a02b17f491af168ab57569240af8f}\label{class_up_down_1_1_u_d_runtime__t_a327a02b17f491af168ab57569240af8f}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!reset\_memory\_manager@{reset\_memory\_manager}}
+\index{reset\_memory\_manager@{reset\_memory\_manager}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{reset\_memory\_manager()}{reset\_memory\_manager()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::reset\+\_\+memory\+\_\+manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Reset the Memory Manager when machine configuration is changed;. 
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a7113c0fad105b40a81231139332c0061}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::init\+Memory\+Arrays()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_af58fb869d8558462617fa84bf83bb595}\label{class_up_down_1_1_u_d_runtime__t_af58fb869d8558462617fa84bf83bb595}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!send\_event@{send\_event}}
+\index{send\_event@{send\_event}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{send\_event()}{send\_event()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::send\+\_\+event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_up_down_1_1event__t}{event\+\_\+t}}}]{ev }\end{DoxyParamCaption})}
+
+
+
+Sends an event to the Up\+Down. 
+
+Sends a new event to the updown event queues. Information about the destination of the event is defined in the ev parameter, including destination UD\+\_\+\+ID, lane\+\_\+id, thread\+\_\+id. The \mbox{\hyperlink{class_up_down_1_1event__t}{event\+\_\+t}} also contains the operands
+
+
+\begin{DoxyParams}{Parameters}
+{\em ev} & the event to be sent \\
+\hline
+\end{DoxyParams}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}, and \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}{Machine\+Config}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_af3aead899ca394be4048678a1769da4d}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::send\+\_\+event()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_af61e9f01022957944d9c74daf365c0a4}\label{class_up_down_1_1_u_d_runtime__t_af61e9f01022957944d9c74daf365c0a4}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!start\_exec@{start\_exec}}
+\index{start\_exec@{start\_exec}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{start\_exec()}{start\_exec()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::start\+\_\+exec (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ud\+\_\+id,  }\item[{uint8\+\_\+t}]{lane\+\_\+num }\end{DoxyParamCaption})}
+
+
+
+Signal lane to start execution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ud\+\_\+id} & Up\+Down ID \\
+\hline
+{\em lane\+\_\+num} & lane to signal \\
+\hline
+\end{DoxyParams}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}, and \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}{Machine\+Config}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a4d07ad90b3cd6de2522c7e37ecdaf133}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::start\+\_\+exec()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a20ee360e1a7946e6296a2dacca1b284f}\label{class_up_down_1_1_u_d_runtime__t_a20ee360e1a7946e6296a2dacca1b284f}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!t2mm\_memcpy@{t2mm\_memcpy}}
+\index{t2mm\_memcpy@{t2mm\_memcpy}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{t2mm\_memcpy()}{t2mm\_memcpy()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::t2mm\+\_\+memcpy (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{offset,  }\item[{void $\ast$}]{src,  }\item[{uint64\+\_\+t}]{size = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+
+
+Copy to mapped memory from top. 
+
+Mapped memory is a region in DRAM that can be accessed from updown. This is necessary due to the lack of support for virtual memories in the Up\+Down. The Up\+Down will be able to use pointers directly into this region without need for address translation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em offset} & Destination offset within the memory mapped region \\
+\hline
+{\em src} & Source pointer \\
+\hline
+{\em size} & size in bytes \\
+\hline
+\end{DoxyParams}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_ae7831fce61c9c34db9043c63f0286ebf}\label{class_up_down_1_1_u_d_runtime__t_ae7831fce61c9c34db9043c63f0286ebf}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!t2ud\_memcpy@{t2ud\_memcpy}}
+\index{t2ud\_memcpy@{t2ud\_memcpy}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{t2ud\_memcpy()}{t2ud\_memcpy()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::t2ud\+\_\+memcpy (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{uint64\+\_\+t}]{size,  }\item[{uint8\+\_\+t}]{ud\+\_\+id,  }\item[{uint8\+\_\+t}]{lane\+\_\+num,  }\item[{uint32\+\_\+t}]{offset }\end{DoxyParamCaption})}
+
+
+
+Copy data from the top to the scratchpad memory. 
+
+This function sends data to the bank associated with the lane\+\_\+num The address is calculated based on the offset.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & pointer to the top data to be copied over to the lane \\
+\hline
+{\em size} & The number of bytes to be copied to the scratchpad memory \\
+\hline
+{\em ud\+\_\+id} & Up\+Down number \\
+\hline
+{\em lane\+\_\+num} & lane bank \\
+\hline
+{\em offset} & offset within bank in bytes \\
+\hline
+\end{DoxyParams}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}, and \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a33fce78b89238e7f2b21fd9e08bf4a2a}{get\+\_\+lane\+\_\+aligned\+\_\+offset()}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a811c0050b3d1ce0e696bddb853017972}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::t2ud\+\_\+memcpy()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_ab96599b352e42e823c692ecc4d3ee689}\label{class_up_down_1_1_u_d_runtime__t_ab96599b352e42e823c692ecc4d3ee689}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!test\_addr@{test\_addr}}
+\index{test\_addr@{test\_addr}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{test\_addr()}{test\_addr()}}
+{\footnotesize\ttfamily bool Up\+Down\+::\+UDRuntime\+\_\+t\+::test\+\_\+addr (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ud\+\_\+id,  }\item[{uint8\+\_\+t}]{lane\+\_\+num,  }\item[{uint32\+\_\+t}]{offset,  }\item[{word\+\_\+t}]{expected = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+
+
+Test a memory location in the updwon bank for the expected value. 
+
+Reads the updown scratchpad memory bank, and check if the value is equal to the expected value. Returns true if the values are equal
+
+
+\begin{DoxyParams}{Parameters}
+{\em ud\+\_\+id} & Up\+Down number \\
+\hline
+{\em lane\+\_\+num} & Lane\+ID to check \\
+\hline
+{\em offset} & offset within the memory bank in bytes \\
+\hline
+{\em expected} & value that is expected in the memory bank \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+word\+\_\+t 
+\end{DoxyReturn}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}, and \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a33fce78b89238e7f2b21fd9e08bf4a2a}{get\+\_\+lane\+\_\+aligned\+\_\+offset()}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a112bba7e502827b810ab98efbf114298}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::test\+\_\+addr()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a7e41c8dae74b2b76e74c8a3d20324d15}\label{class_up_down_1_1_u_d_runtime__t_a7e41c8dae74b2b76e74c8a3d20324d15}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!test\_wait\_addr@{test\_wait\_addr}}
+\index{test\_wait\_addr@{test\_wait\_addr}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{test\_wait\_addr()}{test\_wait\_addr()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::test\+\_\+wait\+\_\+addr (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ud\+\_\+id,  }\item[{uint8\+\_\+t}]{lane\+\_\+num,  }\item[{uint32\+\_\+t}]{offset,  }\item[{word\+\_\+t}]{expected = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+
+
+Test a memory location in the updown bank for the expected value. Wait until it is the expected value. 
+
+Spinwaiting on a location of the updown scratchpad memory bank until the value read is the expected value. Uses lane\+\_\+test\+\_\+memory.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lane\+\_\+num} & Lane\+ID to check \\
+\hline
+{\em offset} & offset within the memory bank in bytes \\
+\hline
+{\em expected} & value that is expected in the memory bank \\
+\hline
+\end{DoxyParams}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}, and \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a33fce78b89238e7f2b21fd9e08bf4a2a}{get\+\_\+lane\+\_\+aligned\+\_\+offset()}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a32ebe16466d123ae02b3f0a56f159e1d}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::test\+\_\+wait\+\_\+addr()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a0bde0edbcb8ab5a7a5d5daabb5e75d49}\label{class_up_down_1_1_u_d_runtime__t_a0bde0edbcb8ab5a7a5d5daabb5e75d49}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!ud2t\_memcpy@{ud2t\_memcpy}}
+\index{ud2t\_memcpy@{ud2t\_memcpy}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{ud2t\_memcpy()}{ud2t\_memcpy()}}
+{\footnotesize\ttfamily void Up\+Down\+::\+UDRuntime\+\_\+t\+::ud2t\+\_\+memcpy (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{uint64\+\_\+t}]{size,  }\item[{uint8\+\_\+t}]{ud\+\_\+id,  }\item[{uint8\+\_\+t}]{lane\+\_\+num,  }\item[{uint32\+\_\+t}]{offset }\end{DoxyParamCaption})}
+
+
+
+Copy data from the scratchpad memory to the top. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & pointer to the top data to be contain values from the scratchpad memory \\
+\hline
+{\em size} & The number of bytes to be copied from the scratchpad memory \\
+\hline
+{\em ud\+\_\+id} & Up\+Down number \\
+\hline
+{\em lane\+\_\+num} & lane bank \\
+\hline
+{\em offset} & offset within bank in bytes \\
+\hline
+\end{DoxyParams}
+
+
+References \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}{Base\+Addrs}}, and \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a33fce78b89238e7f2b21fd9e08bf4a2a}{get\+\_\+lane\+\_\+aligned\+\_\+offset()}}.
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a42d83d235215dc1897eca7a5ee09fc7d}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::ud2t\+\_\+memcpy()}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}\label{class_up_down_1_1_u_d_runtime__t_a84ed7807df12382d06ee8a09b172898f}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!BaseAddrs@{BaseAddrs}}
+\index{BaseAddrs@{BaseAddrs}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{BaseAddrs}{BaseAddrs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_up_down_1_1_u_d_runtime__t_1_1base__addr__t}{base\+\_\+addr\+\_\+t}} Up\+Down\+::\+UDRuntime\+\_\+t\+::\+Base\+Addrs\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+container for all base addresses 
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}{calc\+\_\+addrmap()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a206a9273dbdc8141741e7cd6b065a1fd}{dump\+Base\+Addrs()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a63c5785ffbce1f5944b88346633e0a14}{mm2t\+\_\+memcpy()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_af58fb869d8558462617fa84bf83bb595}{send\+\_\+event()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_af61e9f01022957944d9c74daf365c0a4}{start\+\_\+exec()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a20ee360e1a7946e6296a2dacca1b284f}{t2mm\+\_\+memcpy()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ae7831fce61c9c34db9043c63f0286ebf}{t2ud\+\_\+memcpy()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_ab96599b352e42e823c692ecc4d3ee689}{test\+\_\+addr()}}, \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a112bba7e502827b810ab98efbf114298}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::test\+\_\+addr()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a7e41c8dae74b2b76e74c8a3d20324d15}{test\+\_\+wait\+\_\+addr()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a0bde0edbcb8ab5a7a5d5daabb5e75d49}{ud2t\+\_\+memcpy()}}, and \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a42d83d235215dc1897eca7a5ee09fc7d}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::ud2t\+\_\+memcpy()}}.
+
+\mbox{\Hypertarget{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}\label{class_up_down_1_1_u_d_runtime__t_ac550f02506c21c5e48b6648c2e8c3dd6}} 
+\index{UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}!MachineConfig@{MachineConfig}}
+\index{MachineConfig@{MachineConfig}!UpDown::UDRuntime\_t@{UpDown::UDRuntime\_t}}
+\doxysubsubsection{\texorpdfstring{MachineConfig}{MachineConfig}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_up_down_1_1ud__machine__t}{ud\+\_\+machine\+\_\+t}} Up\+Down\+::\+UDRuntime\+\_\+t\+::\+Machine\+Config\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Contains configuration parameters of the machine abstraction. 
+
+
+
+Referenced by \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}{calc\+\_\+addrmap()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a79ecb1814ceba28e24c404af732e073c}{dump\+Machine\+Config()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a33fce78b89238e7f2b21fd9e08bf4a2a}{get\+\_\+lane\+\_\+aligned\+\_\+offset()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_aa3d126b94a4803a73a7bcbdb18707cb2}{get\+\_\+lane\+\_\+physical\+\_\+memory()}}, \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a7113c0fad105b40a81231139332c0061}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::init\+Memory\+Arrays()}}, \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a76423ee519101241d96a212a307d9d8e}{Up\+Down\+::\+Sim\+UDRuntime\+\_\+t\+::init\+Python\+Interface()}}, \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_af58fb869d8558462617fa84bf83bb595}{send\+\_\+event()}}, and \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_af61e9f01022957944d9c74daf365c0a4}{start\+\_\+exec()}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/josemonsalvediaz/\+Documents/\+Project38/llvm/updown/runtime/include/updown.\+h\item 
+/\+Users/josemonsalvediaz/\+Documents/\+Project38/llvm/updown/runtime/src/updown.\+cpp\end{DoxyCompactItemize}

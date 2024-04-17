@@ -1,0 +1,10 @@
+#ifndef __LIFO_UDWH___
+#define __LIFO_UDWH___
+
+extern event LIFO__initialize(long descriptorIn, long sendBuffer, long addressLM, long sizeLM, long addressDRAM, long sizeDRAN);
+extern event LIFO__clear(long descriptorIn);
+extern event LIFO__push(long descriptorIn, long value);
+extern event LIFO__pop(long descriptorIn);
+extern event LIFO__getSize(long descriptorIn);
+
+#endif

@@ -1,0 +1,26 @@
+#ifndef __pga_H__
+#define __pga_H__
+
+extern event ParallelGraphAbstraction_initialize_vertex_store_TR();
+extern event ParallelGraphAbstraction_initialize_edge_store_TR();
+extern event ParallelGraphAbstraction_initialize_edge_list_store_append_TR();
+extern event ParallelGraphAbstraction_update_vertex_TR();
+extern event ParallelGraphAbstraction_get_vertex_TR();
+extern event ParallelGraphAbstraction_update_edge_TR();
+extern event ParallelGraphAbstraction_get_edge_TR();
+extern event ParallelGraphAbstraction_update_vertex_with_offset_TR();
+extern event ParallelGraphAbstraction_get_vertex_with_offset_TR();
+extern event ParallelGraphAbstraction_update_edge_with_offset_TR();
+extern event ParallelGraphAbstraction_get_edge_with_offset_TR();
+extern event ParallelGraphAbstraction_get_vertex_with_random_TR();
+extern event ParallelGraphAbstraction_get_iters_vertex_store_TR();
+extern event ParallelGraphAbstraction_get_iters_edge_store_TR();
+extern event ParallelGraphAbstraction_get_next_vertex_store_iter_TR();
+extern event ParallelGraphAbstraction_get_next_edge_store_iter_TR();
+extern event ParallelGraphAbstraction_get_next_split_vertex_store_iter_TR();
+extern event ParallelGraphAbstraction_get_next_split_edge_store_iter_TR();
+extern event ParallelGraphAbstraction_append_edge_list_TR();
+extern event ParallelGraphAbstraction_get_edge_list_next_TR();
+extern event ParallelGraphAbstraction_get_edge_list_addr_TR();
+
+#endif

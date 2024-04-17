@@ -1,0 +1,154 @@
+#define LIFO_SENDBUF_IDX 0
+#define LIFO_ADDRESS_LM 1
+#define LIFO_SIZE_LM 2
+#define LIFO_POSFRONT 3
+#define LIFO_POSEND 4
+#define LIFO_ADDRESS_DRAM 5
+#define LIFO_SIZE_DRAM 6
+#define LIFO_INDEX_DRAM 7
+
+thread LIFO {
+	unsigned long counter;
+	unsigned long* local descriptor;
+
+	event initialize(long descriptorIn, long sendBuffer, long addressLM, long sizeLM, long addressDRAM, long sizeDRAN) {
+		unsigned long* local spPtr = LMBASE + descriptorIn;
+		spPtr[LIFO_SENDBUF_IDX] = sendBuffer;
+
+		// LM
+		spPtr[LIFO_ADDRESS_LM] = LMBASE + addressLM;
+		spPtr[LIFO_SIZE_LM] = sizeLM; // total size for the LM buffer in bytes, must be divisable by 64 (since we store/load 8 elements to DRAM at once)
+		spPtr[LIFO_POSFRONT] = 0; // pos_front
+		spPtr[LIFO_POSEND] = sizeLM - 1; // pos_end
+
+		// DRAM
+		spPtr[LIFO_ADDRESS_DRAM] = addressDRAM;
+		spPtr[LIFO_SIZE_DRAM] = sizeDRAN; // total size of the DRAM in bytes
+		spPtr[LIFO_INDEX_DRAM] = 0; // index in the DRAM
+		
+		send_event(CCONT, 0, IGNRCONT);
+		yield_terminate;
+	}
+
+	event clear(long descriptorIn) {
+		descriptor = LMBASE + descriptorIn;
+		descriptor[LIFO_POSFRONT] = 0; // pos_front
+		descriptor[LIFO_POSEND] = 0; // pos_end
+		descriptor[LIFO_INDEX_DRAM] = 0; // index in the DRAM
+		send_event(CCONT, 0, IGNRCONT);
+		yield_terminate;
+	}
+
+	event push(long descriptorIn, long value) {
+		// print ("in lifo, pushing %d", value);
+		descriptor = LMBASE + descriptorIn;
+		unsigned long* local addressLM = descriptor[LIFO_ADDRESS_LM];
+		unsigned long sizeLM = descriptor[LIFO_SIZE_LM];
+		unsigned long pos_front = descriptor[LIFO_POSFRONT];
+		unsigned long pos_end = descriptor[LIFO_POSEND];
+		unsigned long evw = evw_update_event(CEVNT, endThread, 1);
+		counter = 1;
+		
+		//pos_end = (pos_end - 1 + sizeLM) % sizeLM; // Optimization: avoid mod here
+
+		// LIFO in the LM is full
+		if(pos_front == pos_end) {
+			counter = 2;
+			unsigned long dramIndex = descriptor[LIFO_INDEX_DRAM];
+			unsigned long* dramAddress = descriptor[LIFO_ADDRESS_DRAM] + dramIndex;
+			addressLM = addressLM + pos_end;
+			send_dram_write(dramAddress, addressLM, 8, evw);
+			
+			dramIndex = dramIndex + 64;
+			descriptor[LIFO_INDEX_DRAM] = dramIndex;
+
+			pos_end = pos_end + 64;
+			if(pos_end >= sizeLM) {
+				pos_end = 64;
+			}
+			descriptor[LIFO_POSEND] = pos_end;
+    	}
+
+		addressLM = descriptor[LIFO_ADDRESS_LM] + pos_front;
+		*addressLM = value;
+
+		// compute the next address offset
+		pos_front = pos_front + 8;
+		if(pos_front >= sizeLM) {
+			pos_front = 0;
+		}
+		descriptor[LIFO_POSFRONT] = pos_front;
+
+		send_event(CCONT, 0, IGNRCONT); // return to the caller
+		send_event(evw, 0, IGNRCONT);   // make sure this thread terminates (eventually after writing to DRAM)
+	}
+
+	event endThread() {
+		counter = counter - 1;
+		if(counter == 0) {
+			yield_terminate;
+		}
+	}
+
+
+
+	event pop(long descriptorIn) {
+		descriptor = LMBASE + descriptorIn;
+		unsigned long* local addressLM = descriptor[LIFO_ADDRESS_LM];
+		unsigned long sizeLM = descriptor[LIFO_SIZE_LM];
+		unsigned long pos_front = descriptor[LIFO_POSFRONT];
+		unsigned long pos_end = descriptor[LIFO_POSEND];
+		unsigned long evw = evw_update_event(CEVNT, endThread, 1);
+		counter = 1;
+
+
+		if(pos_front == 0) {
+			pos_front = sizeLM - 1 - 8;
+		} else {
+			pos_front = pos_front - 8;
+		}
+		descriptor[LIFO_POSFRONT] = pos_front;
+
+		addressLM = addressLM + pos_front;
+		send_event(CCONT, *addressLM, IGNRCONT);
+		send_event(evw, 0, IGNRCONT);
+
+		// if we can load 8 values into the LM from DRAM again
+		unsigned long spaceInLM;
+		if(pos_front > pos_end) {
+			spaceInLM = pos_front - pos_end;
+		} else {
+			spaceInLM = pos_end - pos_front;
+		}
+
+		unsigned long dramIndex = descriptor[LIFO_INDEX_DRAM];
+		if(spaceInLM >= 8 && dramIndex >= 64) {
+			counter = 2;
+			unsigned long* dramAddress = descriptor[LIFO_ADDRESS_DRAM] + dramIndex;
+			evw = evw_update_event(CEVNT, readDRAM, 1);
+			send_dram_read(dramAddress,8, evw);
+			
+			dramIndex = dramIndex - 64;
+			descriptor[LIFO_INDEX_DRAM] = dramIndex;
+		}
+	}
+
+	event readDRAM(long val0, long val1, long val2, long val3, long val4, long val5, long val6, long val7) {
+		unsigned long* local addressLM = descriptor[LIFO_ADDRESS_LM];
+		unsigned long sizeLM = descriptor[LIFO_SIZE_LM];
+		unsigned long pos_end = descriptor[LIFO_POSEND];
+
+		if(pos_end == 0) {
+			pos_end = sizeLM - 1 - 64;
+		} else {
+			pos_end = pos_end - 64;
+		}
+
+		addressLM = addressLM + pos_end;
+		copyOperands(val0, addressLM, 8);
+
+		if(counter == 0) {
+			yield_terminate;
+		}
+	}
+}

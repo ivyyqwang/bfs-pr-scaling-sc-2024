@@ -1,0 +1,16 @@
+#ifndef __SHT_H__
+#define __SHT_H__
+
+// TODO: Add all the operands to this
+extern event SHT_initialize_TR();
+extern event SHT_finalize_TR();
+extern event SHT_update_TR(long sht_desc_lm_offset, long lm_buf_offset,
+                            long key_op, long value_op);
+extern event SHT_get_TR();
+extern event SHT_get_iterators_TR();
+extern event SHT_get_next_TR();
+extern event SHT_get_next_split_TR();
+
+#define DESC_WORD_CNT 5
+
+#endif

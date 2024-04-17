@@ -1,0 +1,7 @@
+#ifndef __memcpy_H__
+#define __memcpy_H__
+
+extern event Memcpy_memcpy_TR();
+extern event Memcpy_memcpy_dram2lm_TR();
+
+#endif

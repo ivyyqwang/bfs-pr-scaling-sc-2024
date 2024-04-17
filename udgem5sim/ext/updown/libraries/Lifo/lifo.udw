@@ -1,0 +1,212 @@
+#define LIFO_SENDBUF_IDX 0
+#define LIFO_ADDRESS_LM 1
+#define LIFO_SIZE_LM 2
+#define LIFO_POSFRONT 3
+#define LIFO_POSEND 4
+#define LIFO_ADDRESS_DRAM 5
+#define LIFO_SIZE_DRAM 6
+#define LIFO_INDEX_DRAM 7
+#define LIFO_ELE_SIZE_LM 8
+#define LIFO_WAIT_CONT 9
+#define LIFO_TOT_SIZE 10
+
+thread LIFO {
+	unsigned long counter;
+	unsigned long* local descriptor;
+
+	event initialize(long descriptorIn, long sendBuffer, long addressLM, long sizeLM, long addressDRAM, long sizeDRAN) {
+		unsigned long* local spPtr = LMBASE + descriptorIn;
+		spPtr[LIFO_SENDBUF_IDX] = sendBuffer;
+
+		// LM
+		spPtr[LIFO_ADDRESS_LM] = LMBASE + addressLM;
+		spPtr[LIFO_SIZE_LM] = sizeLM; // total size for the LM buffer in bytes, must be divisable by 64 (since we store/load 8 elements to DRAM at once)
+		spPtr[LIFO_POSFRONT] = 0; // pos_front
+		spPtr[LIFO_POSEND] = 0; // pos_end
+		spPtr[LIFO_ELE_SIZE_LM] = 0; // size of occupied space in the LM in bytes
+		spPtr[LIFO_TOT_SIZE] = 0;
+
+		// DRAM
+		spPtr[LIFO_ADDRESS_DRAM] = addressDRAM;
+		spPtr[LIFO_SIZE_DRAM] = sizeDRAN; // total size of the DRAM in bytes
+		spPtr[LIFO_INDEX_DRAM] = 0; // index in the DRAM
+		
+		// wait cont
+		spPtr[LIFO_WAIT_CONT] = IGNRCONT;
+
+		send_event(CCONT, 0, IGNRCONT);
+		yield_terminate;
+	}
+
+	event getSize(long descriptorIn) {
+		descriptor = LMBASE + descriptorIn;
+		unsigned long size = descriptor[LIFO_TOT_SIZE];
+		// print ("size = %ld", size);
+		send_event(CCONT, size, IGNRCONT);
+		yield_terminate;
+	}
+
+	event clear(long descriptorIn) {
+		descriptor = LMBASE + descriptorIn;
+		descriptor[LIFO_POSFRONT] = 0; // pos_front
+		descriptor[LIFO_POSEND] = 0; // pos_end
+		descriptor[LIFO_INDEX_DRAM] = 0; // index in the DRAM
+		send_event(CCONT, 0, IGNRCONT);
+		yield_terminate;
+	}
+
+	event push(long descriptorIn, long value) {
+		descriptor = LMBASE + descriptorIn;
+		descriptor[LIFO_TOT_SIZE] = descriptor[LIFO_TOT_SIZE] + 1;
+		unsigned long* local addressLM = descriptor[LIFO_ADDRESS_LM];
+		unsigned long sizeLM = descriptor[LIFO_SIZE_LM];
+		unsigned long hasLM = descriptor[LIFO_ELE_SIZE_LM];
+		unsigned long pos_front = descriptor[LIFO_POSFRONT];
+		unsigned long pos_end = descriptor[LIFO_POSEND];
+		unsigned long sizeDRAM = descriptor[LIFO_SIZE_DRAM];
+		unsigned long evw = evw_update_event(CEVNT, endThread, 1);
+		counter = 1;
+		
+		// LIFO in the LM is full		
+		if(hasLM == sizeLM) {
+			counter = 2;
+			unsigned long dramIndex = descriptor[LIFO_INDEX_DRAM];
+			unsigned long* dramAddress = descriptor[LIFO_ADDRESS_DRAM] + dramIndex;
+			addressLM = addressLM + pos_end;
+			send_dram_write(dramAddress, addressLM, 8, evw);
+			
+			dramIndex = dramIndex + 64;
+			if(dramIndex >= sizeDRAM) {
+				print("[ERROR] DRAM is full.");
+				yield_terminate;
+			}
+			descriptor[LIFO_INDEX_DRAM] = dramIndex;
+
+			pos_end = pos_end + 64;
+			hasLM = hasLM - 64;
+			if(pos_end >= sizeLM) {
+				pos_end = 0;
+			}
+			// print("trying to store to DRAM, pos_end: %ld", pos_end);
+			descriptor[LIFO_POSEND] = pos_end;
+    	}
+
+		addressLM = descriptor[LIFO_ADDRESS_LM] + pos_front;
+		*addressLM = value;
+
+		// compute the next address offset
+		pos_front = pos_front + 8;
+		hasLM = hasLM + 8;
+
+		if(pos_front >= sizeLM) {
+			pos_front = 0;
+		}
+		descriptor[LIFO_POSFRONT] = pos_front;
+		descriptor[LIFO_ELE_SIZE_LM] = hasLM;
+
+		send_event(CCONT, 0, IGNRCONT); // return to the caller
+		send_event(evw, 0, IGNRCONT);   // make sure this thread terminates (eventually after writing to DRAM)
+	}
+
+	event endThread() {
+		counter = counter - 1;
+		if(counter == 0) {
+			yield_terminate;
+		}
+	}
+
+
+	event pop(long descriptorIn) {
+		descriptor = LMBASE + descriptorIn;
+		unsigned long* local addressLM = descriptor[LIFO_ADDRESS_LM];
+		unsigned long sizeLM = descriptor[LIFO_SIZE_LM];
+		unsigned long hasLM = descriptor[LIFO_ELE_SIZE_LM];
+		unsigned long pos_front = descriptor[LIFO_POSFRONT];
+		unsigned long pos_end = descriptor[LIFO_POSEND];
+		unsigned long evw = evw_update_event(CEVNT, endThread, 1);
+		counter = 1;
+
+		// if (NETID == 617)  {
+		// 	print("pop: pos_front: %ld, pos_end: %ld, hasLM: %ld, offset: %lu", pos_front, pos_end, sizeLM, addressLM - LMBASE);
+
+		// }
+
+
+		if(pos_front == 0) {
+			pos_front = sizeLM - 8;
+		} else {
+			pos_front = pos_front - 8;
+		}
+
+		if(descriptor[LIFO_TOT_SIZE] == 0) {
+			print ("LIFO is empty.");
+			yield_terminate;
+		}
+
+		if (hasLM == 0) {
+			// TODO: need to figure this out
+			print ("LIFO is empty on LM.");
+			yield_terminate;
+		}
+		descriptor[LIFO_TOT_SIZE] = descriptor[LIFO_TOT_SIZE] - 1;
+
+		hasLM = hasLM - 8;
+
+		descriptor[LIFO_POSFRONT] = pos_front;
+		descriptor[LIFO_ELE_SIZE_LM] = hasLM;
+
+		addressLM = addressLM + pos_front;
+
+		send_event(CCONT, *addressLM, IGNRCONT);
+		send_event(evw, 0, IGNRCONT);
+
+
+		// if we can load 8 values into the LM from DRAM again
+		unsigned long spaceInLM = sizeLM - hasLM;
+
+		unsigned long dramIndex = descriptor[LIFO_INDEX_DRAM];
+		if(spaceInLM >= 64 && dramIndex >= 64) {
+			counter = 2;
+			dramIndex = dramIndex - 64;
+			unsigned long* dramAddress = descriptor[LIFO_ADDRESS_DRAM] + dramIndex;
+			evw = evw_update_event(CEVNT, readDRAM, 1);
+			send_dram_read(dramAddress, 8, evw);
+			descriptor[LIFO_INDEX_DRAM] = dramIndex;
+		}
+		// if(NETID == 617) {
+		// 	print("after pop: pos_front: %ld, pos_end: %ld, hasLM: %ld, offset: %lu", pos_front, pos_end, sizeLM, addressLM - LMBASE);
+		// }
+
+	}
+
+	event readDRAM(long val0, long val1, long val2, long val3, long val4, long val5, long val6, long val7) {
+		unsigned long* local addressLM = descriptor[LIFO_ADDRESS_LM];
+		unsigned long sizeLM = descriptor[LIFO_SIZE_LM];
+		unsigned long pos_end = descriptor[LIFO_POSEND];
+		unsigned long hasLM = descriptor[LIFO_ELE_SIZE_LM];
+
+		if(pos_end == 0) {
+			pos_end = sizeLM - 64;
+		} else {
+			pos_end = pos_end - 64;
+		}
+	
+		hasLM = hasLM + 64;
+		addressLM = addressLM + pos_end;
+		// if (NETID == 617) {
+		// 	print("returning from DRAM, addressLM = %lu", addressLM - LMBASE);
+		// }
+		copyOperands(val0, addressLM, 8);
+		// print ("storing %lu %d", addressLM, *addressLM);
+		descriptor[LIFO_POSEND] = pos_end;
+		descriptor[LIFO_ELE_SIZE_LM] = hasLM;
+		counter = counter - 1;
+		if(counter == 0) {
+			yield_terminate;
+		}
+		// if(NETID == 617) {
+		// 	print("after readDRAM: pos_end: %ld, hasLM: %ld, offset: %lu", pos_end, sizeLM, addressLM - LMBASE);
+		// }
+
+	}
+}

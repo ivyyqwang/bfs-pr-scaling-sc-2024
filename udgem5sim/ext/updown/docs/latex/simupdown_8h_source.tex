@@ -1,0 +1,163 @@
+\hypertarget{simupdown_8h_source}{}\doxysection{simupdown.\+h}
+\label{simupdown_8h_source}\index{/Users/josemonsalvediaz/Documents/Project38/llvm/updown/simruntime/include/simupdown.h@{/Users/josemonsalvediaz/Documents/Project38/llvm/updown/simruntime/include/simupdown.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2021 University of Chicago and Argonne National Laboratory}}
+\DoxyCodeLine{3 \textcolor{comment}{ * All rights reserved.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Redistribution and use in source and binary forms, with or without}}
+\DoxyCodeLine{6 \textcolor{comment}{ * modification, are permitted provided that the following conditions are}}
+\DoxyCodeLine{7 \textcolor{comment}{ * met: redistributions of source code must retain the above copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * notice, this list of conditions and the following disclaimer;}}
+\DoxyCodeLine{9 \textcolor{comment}{ * redistributions in binary form must reproduce the above copyright}}
+\DoxyCodeLine{10 \textcolor{comment}{ * notice, this list of conditions and the following disclaimer in the}}
+\DoxyCodeLine{11 \textcolor{comment}{ * documentation and/or other materials provided with the distribution;}}
+\DoxyCodeLine{12 \textcolor{comment}{ * neither the name of the copyright holders nor the names of its}}
+\DoxyCodeLine{13 \textcolor{comment}{ * contributors may be used to endorse or promote products derived from}}
+\DoxyCodeLine{14 \textcolor{comment}{ * this software without specific prior written permission.}}
+\DoxyCodeLine{15 \textcolor{comment}{ *}}
+\DoxyCodeLine{16 \textcolor{comment}{ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS}}
+\DoxyCodeLine{17 \textcolor{comment}{ * "{}AS IS"{} AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT}}
+\DoxyCodeLine{18 \textcolor{comment}{ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR}}
+\DoxyCodeLine{19 \textcolor{comment}{ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT}}
+\DoxyCodeLine{20 \textcolor{comment}{ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,}}
+\DoxyCodeLine{21 \textcolor{comment}{ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT}}
+\DoxyCodeLine{22 \textcolor{comment}{ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,}}
+\DoxyCodeLine{23 \textcolor{comment}{ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY}}
+\DoxyCodeLine{24 \textcolor{comment}{ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT}}
+\DoxyCodeLine{25 \textcolor{comment}{ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE}}
+\DoxyCodeLine{26 \textcolor{comment}{ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.}}
+\DoxyCodeLine{27 \textcolor{comment}{ *}}
+\DoxyCodeLine{28 \textcolor{comment}{ * Author -\/ Jose M Monsalve Diaz}}
+\DoxyCodeLine{29 \textcolor{comment}{ *}}
+\DoxyCodeLine{30 \textcolor{comment}{ */}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#ifndef UPDOWNSIM\_H}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define UPDOWNSIM\_H}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <cstdint>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <cstdio>}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include <cstdlib>}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include <cstring>}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#include "{}debug.h"{}}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#include "{}updown.h"{}}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#ifndef UPDOWN\_INSTALL\_DIR}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#define UPDOWN\_INSTALL\_DIR "{}."{}}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#ifndef UPDOWN\_SOURCE\_DIR}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#define UPDOWN\_SOURCE\_DIR "{}."{}}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{class }\mbox{\hyperlink{class_upstream___py_intf}{Upstream\_PyIntf}};}
+\DoxyCodeLine{53 \textcolor{keyword}{namespace }UpDown \{}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{61 \textcolor{keyword}{enum} EmulatorLogLevel \{}
+\DoxyCodeLine{62   FULL\_TRACE = 0,}
+\DoxyCodeLine{63   STAGE\_TRACE = 1,}
+\DoxyCodeLine{64   PROGRESS\_TRACE = 2,}
+\DoxyCodeLine{65   NONE = 5,}
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{81 \textcolor{keyword}{class }\mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t}{SimUDRuntime\_t}} : \textcolor{keyword}{public} \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t}{UDRuntime\_t}} \{}
+\DoxyCodeLine{82 \textcolor{keyword}{private}:}
+\DoxyCodeLine{83   \textcolor{keyword}{const} std::string LogFileName = \textcolor{stringliteral}{"{}Perf.log"{}};}
+\DoxyCodeLine{84   uint8\_t *MappedMemory;}
+\DoxyCodeLine{85   uint8\_t *ScratchpadMemory;}
+\DoxyCodeLine{86   uint8\_t *ControlMemory;}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   std::string programFile;}
+\DoxyCodeLine{89   std::string programName;}
+\DoxyCodeLine{90   std::string simulationDir;}
+\DoxyCodeLine{91   \mbox{\hyperlink{class_upstream___py_intf}{Upstream\_PyIntf}} *upstream\_pyintf;}
+\DoxyCodeLine{94   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a2089ec0c8e5fa757176519f297924360}{python\_enabled}};}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{98   uint32\_t **\mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_aba904005137a5c78d50491dbe7cc06aa}{sendmap}};}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{112   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a7113c0fad105b40a81231139332c0061}{initMemoryArrays}}();}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{125   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a76423ee519101241d96a212a307d9d8e}{initPythonInterface}}(EmulatorLogLevel printLevel);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{keyword}{public}:}
+\DoxyCodeLine{135   \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a1af458c531ea3297c7991facbed758fa}{SimUDRuntime\_t}}() : \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t}{UDRuntime\_t}}(), \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a2089ec0c8e5fa757176519f297924360}{python\_enabled}}(false), \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_aba904005137a5c78d50491dbe7cc06aa}{sendmap}}(nullptr) \{}
+\DoxyCodeLine{136     UPDOWN\_INFOMSG(\textcolor{stringliteral}{"{}Initializing Simulated Runtime with default params"{}});}
+\DoxyCodeLine{137     UPDOWN\_WARNING(\textcolor{stringliteral}{"{}No python program. Python will be disabled, only "{}}}
+\DoxyCodeLine{138                    \textcolor{stringliteral}{"{}simulating memory interactions"{}});}
+\DoxyCodeLine{139     \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a7113c0fad105b40a81231139332c0061}{initMemoryArrays}}();}
+\DoxyCodeLine{140     \textcolor{comment}{// Recalculate address map}}
+\DoxyCodeLine{141     \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}{calc\_addrmap}}();}
+\DoxyCodeLine{142   \}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{154   \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_adc38b9beb3dcfc1abd60e11869894a97}{SimUDRuntime\_t}}(\mbox{\hyperlink{struct_up_down_1_1ud__machine__t}{ud\_machine\_t}} machineConfig)}
+\DoxyCodeLine{155       : \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t}{UDRuntime\_t}}(machineConfig), \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a2089ec0c8e5fa757176519f297924360}{python\_enabled}}(false), \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_aba904005137a5c78d50491dbe7cc06aa}{sendmap}}(nullptr) \{}
+\DoxyCodeLine{156     UPDOWN\_INFOMSG(\textcolor{stringliteral}{"{}Initializing runtime with custom machineConfig"{}});}
+\DoxyCodeLine{157     UPDOWN\_WARNING(\textcolor{stringliteral}{"{}No python program. Python will be disabled, only "{}}}
+\DoxyCodeLine{158                    \textcolor{stringliteral}{"{}simulating memory interactions"{}});}
+\DoxyCodeLine{159     \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a7113c0fad105b40a81231139332c0061}{initMemoryArrays}}();}
+\DoxyCodeLine{160     \textcolor{comment}{// Recalculate address map}}
+\DoxyCodeLine{161     \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}{calc\_addrmap}}();}
+\DoxyCodeLine{162   \}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{174   \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_ac200dff089c69a7f5e1f8a71a4e1601c}{SimUDRuntime\_t}}(std::string programFile,}
+\DoxyCodeLine{175                  std::string programName, std::string simulationDir,}
+\DoxyCodeLine{176                  EmulatorLogLevel printLvl = EmulatorLogLevel::NONE)}
+\DoxyCodeLine{177       : \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t}{UDRuntime\_t}}(), programFile(programFile),}
+\DoxyCodeLine{178         programName(programName), simulationDir(simulationDir),}
+\DoxyCodeLine{179         \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a2089ec0c8e5fa757176519f297924360}{python\_enabled}}(true), \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_aba904005137a5c78d50491dbe7cc06aa}{sendmap}}(nullptr) \{}
+\DoxyCodeLine{180     UPDOWN\_INFOMSG(\textcolor{stringliteral}{"{}Initializing runtime with custom machineConfig"{}});}
+\DoxyCodeLine{181     \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a7113c0fad105b40a81231139332c0061}{initMemoryArrays}}();}
+\DoxyCodeLine{182     UPDOWN\_INFOMSG(\textcolor{stringliteral}{"{}Running file \%s Program \%s Dir \%s"{}}, programFile.c\_str(),}
+\DoxyCodeLine{183                    programName.c\_str(), simulationDir.c\_str());}
+\DoxyCodeLine{184     \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a76423ee519101241d96a212a307d9d8e}{initPythonInterface}}(printLvl);}
+\DoxyCodeLine{185     \textcolor{comment}{// Recalculate address map}}
+\DoxyCodeLine{186     \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}{calc\_addrmap}}();}
+\DoxyCodeLine{187   \}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{199   \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a3173647c4905f9eefd115f610a9e25bf}{SimUDRuntime\_t}}(\mbox{\hyperlink{struct_up_down_1_1ud__machine__t}{ud\_machine\_t}} machineConfig, std::string programFile,}
+\DoxyCodeLine{200                  std::string programName, std::string simulationDir,}
+\DoxyCodeLine{201                  EmulatorLogLevel printLvl = EmulatorLogLevel::NONE)}
+\DoxyCodeLine{202       : \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t}{UDRuntime\_t}}(machineConfig), programFile(programFile),}
+\DoxyCodeLine{203         programName(programName), simulationDir(simulationDir),}
+\DoxyCodeLine{204         \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a2089ec0c8e5fa757176519f297924360}{python\_enabled}}(true), \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_aba904005137a5c78d50491dbe7cc06aa}{sendmap}}(nullptr) \{}
+\DoxyCodeLine{205     UPDOWN\_INFOMSG(\textcolor{stringliteral}{"{}Initializing runtime with custom machineConfig"{}});}
+\DoxyCodeLine{206     \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a7113c0fad105b40a81231139332c0061}{initMemoryArrays}}();}
+\DoxyCodeLine{207     UPDOWN\_INFOMSG(\textcolor{stringliteral}{"{}Running file \%s Program \%s Dir \%s"{}}, programFile.c\_str(),}
+\DoxyCodeLine{208                    programName.c\_str(), simulationDir.c\_str());}
+\DoxyCodeLine{209     \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a76423ee519101241d96a212a307d9d8e}{initPythonInterface}}(printLvl);}
+\DoxyCodeLine{210     \textcolor{comment}{// Recalculate address map}}
+\DoxyCodeLine{211     \mbox{\hyperlink{class_up_down_1_1_u_d_runtime__t_a53609a9bdbc8caae702ea49684c0ea64}{calc\_addrmap}}();}
+\DoxyCodeLine{212   \}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{219   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_af3aead899ca394be4048678a1769da4d}{send\_event}}(\mbox{\hyperlink{class_up_down_1_1event__t}{event\_t}} ev);}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{226   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a4d07ad90b3cd6de2522c7e37ecdaf133}{start\_exec}}(uint8\_t ud\_id, uint8\_t lane\_num);}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{238   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a811c0050b3d1ce0e696bddb853017972}{t2ud\_memcpy}}(\textcolor{keywordtype}{void}* data, uint64\_t size, uint8\_t ud\_id, uint8\_t lane\_num,}
+\DoxyCodeLine{239                    uint32\_t offset);}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{255   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a42d83d235215dc1897eca7a5ee09fc7d}{ud2t\_memcpy}}(\textcolor{keywordtype}{void}* data, uint64\_t size, uint8\_t ud\_id, uint8\_t lane\_num,}
+\DoxyCodeLine{256                    uint32\_t offset);}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{268   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a112bba7e502827b810ab98efbf114298}{test\_addr}}(uint8\_t ud\_id, uint8\_t lane\_num, uint32\_t offset,}
+\DoxyCodeLine{269                  word\_t expected = 1);}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{281   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_a32ebe16466d123ae02b3f0a56f159e1d}{test\_wait\_addr}}(uint8\_t ud\_id, uint8\_t lane\_num, uint32\_t offset,}
+\DoxyCodeLine{282                       word\_t expected = 1);}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284   \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t}{\string~SimUDRuntime\_t}}() \{}
+\DoxyCodeLine{285     \textcolor{keyword}{delete} MappedMemory;}
+\DoxyCodeLine{286     \textcolor{keyword}{delete} ScratchpadMemory;}
+\DoxyCodeLine{287     \textcolor{keyword}{delete} ControlMemory;}
+\DoxyCodeLine{288     \textcolor{keyword}{delete} \mbox{\hyperlink{class_up_down_1_1_sim_u_d_runtime__t_aba904005137a5c78d50491dbe7cc06aa}{sendmap}};}
+\DoxyCodeLine{289   \}}
+\DoxyCodeLine{290 \};}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 \} \textcolor{comment}{// namespace UpDown}}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
