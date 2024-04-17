@@ -1,0 +1,13 @@
+
+Import('*')
+
+#if not main['HAVE_SPIKE']:
+#    print("Not building Downstream, could not find SPIKE")
+#    Return()
+#
+#
+SimObject('UpDownObj.py')
+
+Source('updown_obj.cc')
+
+DebugFlag('UpDown', "Simple simulation of the updown processor")

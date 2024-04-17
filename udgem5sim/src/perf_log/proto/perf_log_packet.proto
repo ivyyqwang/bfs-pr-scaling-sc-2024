@@ -1,0 +1,212 @@
+syntax = "proto2";
+
+package ProtoPerfLog;
+
+message PerfLogHeader {
+  optional string obj_id = 1;
+  optional uint32 ver = 2 [default = 0];
+  optional uint64 tick_freq = 3;
+  optional uint32 unix_time = 5;
+
+  message IdStringEntry {
+    optional uint32 key = 1;
+    optional string value = 2;
+  }
+
+  repeated IdStringEntry id_strings = 4;
+}
+
+message PerfLogPacket {
+  optional uint64 sim_timestamp = 1;
+  reserved 2 to 50;
+
+  optional AreaSystem system = 51;
+  repeated AreaTop top = 52;
+  repeated AreaUpdown updown = 53;
+}
+
+message AreaSystem {
+  reserved 1 to 49;
+
+  optional SystemMessage msg = 50;
+
+  // Add more payload messages, number start from 51
+  optional SystemL3CacheStats l3_cache_stats = 51;
+  repeated SystemDramStats dram_per_ctrlr_stats = 52;
+}
+
+message AreaTop {
+  optional uint32 socket_id = 1;
+  optional uint32 core_id = 2;
+  optional uint32 thread_id = 3;
+  reserved 4 to 49;
+
+  optional TopMessage msg = 50;
+
+  // Add more payload messages, number start from 51
+  optional TopCoreStats core_stats = 51;
+  optional TopL1CacheStats l1_cache_stats = 52;
+  optional TopL2CacheStats l2_cache_stats = 53;
+}
+
+message AreaUpdown {
+  optional uint32 updown_id = 1;
+  optional uint32 lane_id = 2;
+  optional uint32 thread_id = 3;
+  optional uint32 event_base = 4;
+  optional uint32 event_label = 5;
+  reserved 6 to 49;
+
+  optional UpdownMessage msg = 50;
+
+  // Add more payload messages, number start from 51
+  optional UpdownCycleStats cycle_stats = 51;
+  optional UpdownActionStats action_stats = 52;
+  optional UpdownTransitionStats trans_stats = 53;
+  optional UpdownQueueStats queue_stats = 54;
+  optional UpdownLocalMemoryStats local_mem_stats = 55;
+  optional UpdownMemoryInterfaceStats mem_intf_stats = 56;
+}
+
+message IntegerRegister {
+  optional string name = 1;
+  optional uint64 value = 2;
+}
+
+message FloatRegister {
+  optional string name = 1;
+  optional double value = 2;
+}
+
+message MemoryValue {
+  optional uint64 addr = 1;
+  optional uint32 size = 2;
+  optional uint64 int_value = 3;
+  optional double float_value = 4;
+}
+
+message SystemMessage {
+  optional uint32 id = 1 [default = 0];
+  optional string msg = 2;
+}
+
+message TopMessage {
+  optional uint32 id = 1 [default = 0];
+  optional string msg = 2;
+  repeated IntegerRegister int_regs = 3;
+  repeated FloatRegister fp_regs = 4;
+  repeated MemoryValue mem_vals = 5;
+}
+
+message UpdownMessage {
+  optional uint32 id = 1 [default = 0];
+  optional string msg = 2;
+  repeated IntegerRegister int_regs = 3;
+  reserved 4;
+  repeated MemoryValue mem_vals = 5;
+}
+
+message SystemL3CacheStats {
+  optional uint64 total_accesses = 1;
+  optional uint64 total_misses = 2;
+  optional uint64 total_read_accesses = 3;
+  optional uint64 total_read_misses = 4;
+  optional uint64 total_write_accesses = 5;
+  optional uint64 total_write_misses = 6;
+}
+
+message SystemDramStats {
+  // Per memory controller
+  optional uint32 ctrlr_id = 1;
+  optional uint64 num_reads = 2;
+  optional uint64 num_writes = 3;
+  optional uint64 bytes_read = 4;
+  optional uint64 bytes_write = 5;
+  optional uint64 bw_read = 6;
+  optional uint64 bw_write = 7;
+}
+
+message TopCoreStats {
+  optional uint64 cycles = 1;
+  optional uint64 num_insts = 2;
+  optional uint64 num_insts_issued = 3;
+  optional uint64 num_insts_committed = 4;
+  optional uint64 num_load_insts = 5;
+  optional uint64 num_store_insts = 6;
+  optional uint64 num_branch_insts = 7;
+  optional uint64 num_integer_insts = 8;
+  optional uint64 num_float_insts = 9;
+  optional uint64 num_vector_insts = 10;
+}
+
+message TopL1CacheStats {
+  optional uint64 dcache_total_accesses = 1;
+  optional uint64 dcache_total_misses = 2;
+  optional uint64 dcache_total_read_accesses = 3;
+  optional uint64 dcache_total_read_misses = 4;
+  optional uint64 dcache_total_write_accesses = 5;
+  optional uint64 dcache_total_write_misses = 6;
+
+  optional uint64 icache_total_accesses = 7;
+  optional uint64 icache_total_misses = 8;
+  optional uint64 icache_total_read_accesses = 9;
+  optional uint64 icache_total_read_misses = 10;
+  optional uint64 icache_total_write_accesses = 11;
+  optional uint64 icache_total_write_misses = 12;
+}
+
+message TopL2CacheStats {
+  optional uint64 total_accesses = 1;
+  optional uint64 total_misses = 2;
+  optional uint64 total_read_accesses = 3;
+  optional uint64 total_read_misses = 4;
+  optional uint64 total_write_accesses = 5;
+  optional uint64 total_write_misses = 6;
+}
+
+message UpdownCycleStats {
+  optional uint64 exec_cycles = 1;
+  optional uint64 busy_cycles = 2;
+  optional uint64 idle_cycles = 3;
+  optional uint64 stall_cycles = 4;
+}
+
+message UpdownActionStats {
+  optional uint64 total_actions = 1;
+  optional uint64 message_actions = 2;
+  optional uint64 move_actions = 3;
+  optional uint64 alu_actions = 4;
+  optional uint64 branch_actions = 5;
+  optional uint64 yield_actions = 6;
+  optional uint64 cmpswp_actions = 7;
+  optional uint64 compare_actions = 8;
+}
+
+message UpdownTransitionStats {
+  optional uint64 total_trans = 1;
+  optional uint64 labeled_trans = 2;
+  optional uint64 default_trans = 3;
+  optional uint64 flagged_trans = 4;
+  optional uint64 epsilon_trans = 5;
+  optional uint64 majority_trans = 6;
+  optional uint64 common_trans = 7;
+  optional uint64 refill_trans = 8;
+  optional uint64 event_trans = 9;
+  optional uint64 yield_trans = 10;
+}
+
+message UpdownQueueStats {
+  optional uint32 event_q_len = 1;
+  optional uint32 operand_q_len = 2;
+  optional uint32 snoop_q_len = 3;
+}
+
+message UpdownLocalMemoryStats {
+  optional uint64 read_bytes = 1;
+  optional uint64 write_bytes = 2;
+}
+
+message UpdownMemoryInterfaceStats {
+  optional uint64 read_bytes = 1;
+  optional uint64 write_bytes = 2;
+}

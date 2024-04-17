@@ -1,0 +1,215 @@
+syntax = "proto2";
+
+package ProtoPerfLogV2;
+
+message PerfLogHeader {
+  optional string obj_id = 1;
+  optional uint32 ver = 2 [default = 2];
+  optional uint64 tick_freq = 3;
+  optional uint32 unix_time = 5;
+
+  message IdStringEntry {
+    optional uint32 key = 1;
+    optional string value = 2;
+  }
+
+  repeated IdStringEntry id_strings = 4;
+}
+
+message PerfLogPacket {
+  optional uint64 sim_timestamp = 1;
+  reserved 2 to 50;
+
+  optional AreaSystem system = 51;
+  repeated AreaTop top = 52;
+  repeated AreaUpdown updown = 53;
+}
+
+message AreaSystem {
+  reserved 1 to 49;
+
+  optional SystemMessage system_msg = 50;
+
+  optional uint64 l3_cache_total_accesses = 51;
+  optional uint64 l3_cache_total_misses = 52;
+  optional uint64 l3_cache_total_read_accesses = 53;
+  optional uint64 l3_cache_total_read_misses = 54;
+  optional uint64 l3_cache_total_write_accesses = 55;
+  optional uint64 l3_cache_total_write_misses = 56;
+  reserved 57 to 69;
+
+  repeated SystemDramStats dram_per_ctrlr_stats = 70;
+}
+
+message SystemDramStats {
+  // Per memory controller
+  optional uint32 ctrlr_id = 1;
+  optional uint64 num_reads = 2;
+  optional uint64 num_writes = 3;
+  optional uint64 bytes_read = 4;
+  optional uint64 bytes_write = 5;
+  optional uint64 bw_read = 6;
+  optional uint64 bw_write = 7;
+}
+
+message AreaTop {
+  optional uint32 socket_id = 1;
+  optional uint32 core_id = 2;
+  optional uint32 thread_id = 3;
+  reserved 4 to 49;
+
+  optional TopMessage top_msg = 50;
+
+  optional uint64 core_cycles = 51;
+  optional uint64 core_num_issue_insts = 52;
+  optional uint64 core_num_issue_load_insts = 53;
+  optional uint64 core_num_issue_store_insts = 54;
+  optional uint64 core_num_issue_branch_insts = 55;
+  optional uint64 core_num_issue_integer_insts = 56;
+  optional uint64 core_num_issue_float_insts = 57;
+  optional uint64 core_num_issue_vector_insts = 58;
+  optional uint64 core_num_issue_amo_insts = 59;
+  optional uint64 core_num_issue_call_insts = 60;
+  optional uint64 core_num_commit_insts = 61;
+  optional uint64 core_num_commit_load_insts = 62;
+  optional uint64 core_num_commit_store_insts = 63;
+  optional uint64 core_num_commit_branch_insts = 64;
+  optional uint64 core_num_commit_integer_insts = 65;
+  optional uint64 core_num_commit_float_insts = 66;
+  optional uint64 core_num_commit_vector_insts = 67;
+  optional uint64 core_num_commit_amo_insts = 68;
+  optional uint64 core_num_commit_call_insts = 69;
+  reserved 70 to 100;
+
+  optional uint64 l1_dcache_total_accesses = 101;
+  optional uint64 l1_dcache_total_misses = 102;
+  optional uint64 l1_dcache_total_read_accesses = 103;
+  optional uint64 l1_dcache_total_read_misses = 104;
+  optional uint64 l1_dcache_total_write_accesses = 105;
+  optional uint64 l1_dcache_total_write_misses = 106;
+  optional uint64 l1_icache_total_accesses = 107;
+  optional uint64 l1_icache_total_misses = 108;
+  optional uint64 l1_icache_total_read_accesses = 109;
+  optional uint64 l1_icache_total_read_misses = 110;
+  optional uint64 l1_icache_total_write_accesses = 111;
+  optional uint64 l1_icache_total_write_misses = 112;
+  reserved 113 to 150;
+
+  optional uint64 l2_cache_total_accesses = 151;
+  optional uint64 l2_cache_total_misses = 152;
+  optional uint64 l2_cache_total_read_accesses = 154;
+  optional uint64 l2_cache_total_read_misses = 153;
+  optional uint64 l2_cache_total_write_accesses = 155;
+  optional uint64 l2_cache_total_write_misses = 156;
+  reserved 157 to 200;
+}
+
+message AreaUpdown {
+  optional uint32 updown_id = 1;
+  optional uint32 lane_id = 2;
+  optional uint32 thread_id = 3;
+  optional uint32 event_base = 4;
+  optional uint32 event_label = 5;
+  reserved 6 to 49;
+
+  optional UpdownMessage updown_msg = 50;
+
+  optional uint64 cycle_exec = 51;
+  optional uint64 cycle_busy = 52;
+  optional uint64 cycle_idle = 53;
+  optional uint64 cycle_stall = 54;
+
+  optional uint64 action_num_total = 61;
+  optional uint64 action_num_message = 62;
+  optional uint64 action_num_move = 63;
+  optional uint64 action_num_alu = 64;
+  optional uint64 action_num_branch = 65;
+  optional uint64 action_num_yield = 66;
+  optional uint64 action_num_cmpswp = 67;
+  optional uint64 action_num_compare = 68;
+
+  optional uint64 trans_num_total = 81;
+  optional uint64 trans_num_labeled = 82;
+  optional uint64 trans_num_default = 83;
+  optional uint64 trans_num_flagged = 84;
+  optional uint64 trans_num_epsilon = 85;
+  optional uint64 trans_num_majority = 86;
+  optional uint64 trans_num_common = 87;
+  optional uint64 trans_num_refill = 88;
+  optional uint64 trans_num_event = 89;
+  optional uint64 trans_num_yield = 90;
+
+  optional uint32 queue_len_event = 101;
+  optional uint32 queue_len_operand = 102;
+  optional uint32 queue_len_snoop = 103;
+  optional uint32 queue_len_event_mean = 104;
+  optional uint32 queue_len_event_max = 105;
+  optional uint32 queue_len_operand_mean = 106;
+  optional uint32 queue_len_operand_max = 107;
+
+  optional uint64 local_mem_bytes_read = 111;
+  optional uint64 local_mem_bytes_write = 112;
+  optional uint64 local_mem_num_read = 113;
+  optional uint64 local_mem_num_write = 114;
+
+  optional uint64 dram_bytes_read = 121;
+  optional uint64 dram_bytes_write = 122;
+  optional uint64 dram_num_read = 123;
+  optional uint64 dram_num_write = 124;
+
+  optional uint64 user_counter0 = 401;
+  optional uint64 user_counter1 = 402;
+  optional uint64 user_counter2 = 403;
+  optional uint64 user_counter3 = 404;
+  optional uint64 user_counter4 = 405;
+  optional uint64 user_counter5 = 406;
+  optional uint64 user_counter6 = 407;
+  optional uint64 user_counter7 = 408;
+  optional uint64 user_counter8 = 409;
+  optional uint64 user_counter9 = 410;
+  optional uint64 user_counter10 = 411;
+  optional uint64 user_counter11 = 412;
+  optional uint64 user_counter12 = 413;
+  optional uint64 user_counter13 = 414;
+  optional uint64 user_counter14 = 415;
+  optional uint64 user_counter15 = 416;
+}
+
+message IntegerRegister {
+  optional string name = 1;
+  optional uint64 value = 2;
+}
+
+message FloatRegister {
+  optional string name = 1;
+  optional double value = 2;
+}
+
+message MemoryValue {
+  optional uint64 addr = 1;
+  optional uint32 size = 2;
+  optional uint64 int_value = 3;
+  optional double float_value = 4;
+}
+
+message SystemMessage {
+  optional uint32 id = 1 [default = 0];
+  optional string str = 2;
+}
+
+message TopMessage {
+  optional uint32 id = 1 [default = 0];
+  optional string str = 2;
+  repeated IntegerRegister int_regs = 3;
+  repeated FloatRegister fp_regs = 4;
+  repeated MemoryValue mem_vals = 5;
+}
+
+message UpdownMessage {
+  optional uint32 id = 1 [default = 0];
+  optional string str = 2;
+  repeated IntegerRegister int_regs = 3;
+  reserved 4;
+  repeated MemoryValue mem_vals = 5;
+}
+
