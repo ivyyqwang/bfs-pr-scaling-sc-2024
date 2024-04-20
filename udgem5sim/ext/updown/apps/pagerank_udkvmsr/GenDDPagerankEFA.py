@@ -68,7 +68,7 @@ def GenMSRPagerankEFA(efa: EFAProgram):
     '''
     pagerankMSR = PagerankMapShuffleReduce(efa=efa, task_name="pr", meta_data_offset=64, debug_flag=False)
     # Setup the input and output key value set. 
-    pagerankMSR.set_input_kvset(OneDimKeyValueSet("Input", element_size=4, argument_size=1, bypass_gen_partition=True))
+    pagerankMSR.set_input_kvset(OneDimKeyValueSet("Input", element_size=4, argument_size=2, bypass_gen_partition=True))
     pagerankMSR.set_intermediate_kvset(IntermediateKeyValueSet("Intermediate", key_size=1, value_size=1))
     pagerankMSR.set_output_kvset(OneDimKeyValueSet("Output", element_size=1))
     # If kv_merge() is used, the cache must be enabled and the cache size must be set.

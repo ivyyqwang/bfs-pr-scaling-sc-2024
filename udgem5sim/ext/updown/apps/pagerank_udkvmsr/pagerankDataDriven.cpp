@@ -59,6 +59,8 @@ struct Iterator {
 
 void pagerank_updown_iteration(UpDown::UDRuntime_t *pagerank_rt, Iterator *partitions, int PART_PARM, int num_lanes, Vertex *old_g_v_bin, Vertex *new_g_v_bin, int num_vertices, int iteration) {
   
+  double alpha = ALPHA;
+  
 #ifdef GEM5_MODE
   m5_switch_cpu();
   /* operands
@@ -69,9 +71,9 @@ void pagerank_updown_iteration(UpDown::UDRuntime_t *pagerank_rt, Iterator *parti
     X12: Input KVSet length
     X13: Pointer to outKVSet (64-bit DRAM address)
     X14: Output KVSet length
-    X15: Top flag offset in the scratchpad (in Bytes)
+    X15: Alpha value
   */
-  UpDown::operands_t ops(7);
+  UpDown::operands_t ops(8);
   ops.set_operand(0, (uint64_t) partitions);
   ops.set_operand(1, (uint64_t) PART_PARM);
   ops.set_operand(2, (uint64_t) num_lanes);
@@ -79,6 +81,7 @@ void pagerank_updown_iteration(UpDown::UDRuntime_t *pagerank_rt, Iterator *parti
   ops.set_operand(4, (uint64_t) num_vertices);
   ops.set_operand(5, (uint64_t) new_g_v_bin);
   ops.set_operand(6, (uint64_t) num_vertices);
+  ops.set_operand(7, (uint64_t) *reinterpret_cast<uint64_t *>(&alpha));
 
   UpDown::networkid_t nwid(0, false, 0);
 
@@ -121,9 +124,9 @@ void pagerank_updown_iteration(UpDown::UDRuntime_t *pagerank_rt, Iterator *parti
     X12: Input KVSet length
     X13: Pointer to outKVSet (64-bit DRAM address)
     X14: Output KVSet length
-    X15: Top flag offset in the scratchpad (in Bytes)
+    X15: Alpha value
   */
-  UpDown::operands_t ops(7);
+  UpDown::operands_t ops(8);
   ops.set_operand(0, (uint64_t) partitions);
   ops.set_operand(1, (uint64_t) PART_PARM);
   ops.set_operand(2, (uint64_t) num_lanes);
@@ -131,6 +134,7 @@ void pagerank_updown_iteration(UpDown::UDRuntime_t *pagerank_rt, Iterator *parti
   ops.set_operand(4, (uint64_t) num_vertices);
   ops.set_operand(5, (uint64_t) g_v_val);
   ops.set_operand(6, (uint64_t) num_vertices);
+  ops.set_operand(7, (uint64_t) *reinterpret_cast<uint64_t *>(&alpha));
 
   UpDown::networkid_t nwid(0, false, 0);
 
@@ -249,8 +253,10 @@ int main(int argc, char* argv[]) {
   uint64_t num_pairs_per_part = ceil((num_vertices + 0.0) / num_partitions);
   printf("Number of partitions per lane = %d\t Number of partitions = %ld\t Number of vertices per partition = %ld\n", PART_PARM, num_partitions, num_pairs_per_part);
 
-  Iterator *partitions = reinterpret_cast<Iterator *>(
-        pagerank_rt->mm_malloc_global((num_partitions) * sizeof(Iterator)));
+  Iterator *old_partitions = reinterpret_cast<Iterator *>(
+        pagerank_rt->mm_malloc((num_partitions) * sizeof(Iterator)));
+  Iterator *new_partitions = reinterpret_cast<Iterator *>(
+        pagerank_rt->mm_malloc((num_partitions) * sizeof(Iterator)));
 
 
 #ifdef DEBUG
@@ -289,9 +295,11 @@ int main(int argc, char* argv[]) {
   // Initialize partitions
   int offset = 0;
   for (int i = 0; i < num_partitions; i++) {
-    partitions[i].begin = old_g_v_bin + offset;
+    old_partitions[i].begin = old_g_v_bin + offset;
+    new_partitions[i].begin = new_g_v_bin + offset;
     offset = std::min((i+1) * num_pairs_per_part, num_vertices);
-    partitions[i].end = new_g_v_bin + offset;
+    old_partitions[i].end = old_g_v_bin + offset;
+    new_partitions[i].end = new_g_v_bin + offset;
 #ifdef DEBUG_GRAPH
     printf("Partition %d: pair_id=%d, key=%ld neighbors=%p "
             "base_pair_addr=%p, part_entry_addr=%p\n",
@@ -310,7 +318,8 @@ int main(int argc, char* argv[]) {
 
   for (int i = 0; i < num_iterations; i++) {
     printf("Start iteration %d\n", i);
-    pagerank_updown_iteration(pagerank_rt, partitions, PART_PARM, num_lanes, old_g_v_bin, new_g_v_bin, num_vertices, i);
+    pagerank_updown_iteration(pagerank_rt, old_partitions, PART_PARM, num_lanes, old_g_v_bin, new_g_v_bin, num_vertices, i);
+    pagerank_updown_iteration(pagerank_rt, new_partitions, PART_PARM, num_lanes, new_g_v_bin, old_g_v_bin, num_vertices, i);
   }
 
 
@@ -332,18 +341,18 @@ int main(int argc, char* argv[]) {
 #endif
 
 
-#ifdef FASTSIM
-  for(int i = 0; i < num_uds_per_node; i = i + 1){
-    for(int j = 0; j < num_lanes_per_ud; j = j + 1){
-      pagerank_rt->print_stats(i, j);
+// #ifdef FASTSIM
+//   for(int i = 0; i < num_uds_per_node; i = i + 1){
+//     for(int j = 0; j < num_lanes_per_ud; j = j + 1){
+//       pagerank_rt->print_stats(i, j);
     
-#ifdef DETAIL_STATS
-      bfs_rt->print_histograms(i, j);
-#endif
+// #ifdef DETAIL_STATS
+//       bfs_rt->print_histograms(i, j);
+// #endif
 
-    }
-  }
-#endif
+//     }
+//   }
+// #endif
 
   delete pagerank_rt;
   printf("UDKVMSR PageRank program finishes.\n");

@@ -32,9 +32,9 @@ if (UPDOWNRT_ENABLE_APPS)
     )
 
     set(UPDOWNSIMRT_PYTHON_APPS_SRC
-        pagerank_udkvmsr/pr_vertex_split.py
+        pagerank_udkvmsr/pr_preprocess.py
 
-        bfs/bfs_vertex_split.py
+        bfs/bfs_preprocess.py
         bfs/RMAT.py
     )
 
