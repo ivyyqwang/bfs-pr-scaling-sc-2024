@@ -9,6 +9,7 @@ if (UPDOWNRT_ENABLE_APPS)
     set(UPDOWNSIMRT_APPS_SRC 
         pagerank_udkvmsr/pagerankMapShuffleReduce.cpp
         pagerank_udkvmsr/dataLocPagerankMapShuffleReduce.cpp
+        pagerank_udkvmsr/pagerankDataDriven.cpp
         pagerank_udkvmsr/preprocess_pagerank.cpp
         pagerank_udkvmsr/pagerankBaseline.cpp
 

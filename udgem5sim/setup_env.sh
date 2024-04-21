@@ -16,3 +16,6 @@ export LD_LIBRARY_PATH=$UPDOWN_INSTALL_DIR/updown/lib
 echo "LD_LIBRARY_PATH:" $LD_LIBRARY_PATH
 export PYTHONPATH=$UPDOWN_SOURCE_CODE/udbasim/assembler:$UPDOWN_SOURCE_CODE/simruntime/src/emulator
 echo "PYTHONPATH:" $PYTHONPATH
+
+pushd $PROJ/ext/updown
+source setup_env.sh
